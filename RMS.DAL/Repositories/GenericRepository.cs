@@ -36,25 +36,30 @@ namespace RMS.DAL.Repositories
         public T Get(int id)
         {
             return _dbSet.Find(id);
-             
+
         }
 
         public IList<T> GetAll()
         {
-            return _dbSet.ToList();
+            return _dbSet.AsNoTracking().ToList();
         }
 
-        public void Update(int id,T entity)
+        public void Update(int id, T entity)
         {
-            var dbEntity = _dbSet.Find(id);
-            if (dbEntity != null)
-            {
-                dbEntity = entity;
-                dbEntity.Id = id;
-                _dbContext.Entry(dbEntity).State = EntityState.Modified;
-                _dbSet.Update(dbEntity);
-                _dbContext.SaveChanges();
-            }
+            //  var dbEntity = _dbSet.Find(id);
+            //if (dbEntity != null)
+            //{
+
+            
+            entity.Id = id;
+            _dbContext.Attach(entity);
+            // dbEntity = entity;
+            // dbEntity.Id = id;
+
+            // _dbContext.Entry(dbEntity).State = EntityState.Modified;
+            //  _dbSet.Update(dbEntity);
+            _dbContext.SaveChanges();
+            //}
         }
     }
 }
